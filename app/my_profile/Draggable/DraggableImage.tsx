@@ -167,7 +167,7 @@ const DraggableImage: React.FC<DraggableImageProps> = ({
                         className="px-8 py-4"
                         >
                         
-                        <span className="font-bold text-gray-800">
+                        <span className={`font-bold ${image.desired_self ? 'text-indigo-600' : 'text-gray-800'}`}>
                             #{image.main_keyword}
                         </span>
                         </div>
@@ -176,15 +176,20 @@ const DraggableImage: React.FC<DraggableImageProps> = ({
                     {/* 이미지 */}
                     <SheetTrigger asChild>
                         <div 
-                        className={`relative w-full h-[calc(100%-40px)] ${updatedFrameStyle === 'people' ? 'overflow-hidden' : ''} ${!isEditing && !isSearchMode ? 'cursor-pointer' : ''} ${isEditing ? 'pointer-events-none' : ''}`}
+                        className={`relative w-full h-[calc(100%-40px)] ${!isEditing && !isSearchMode ? 'cursor-pointer' : ''} ${isEditing ? 'pointer-events-none' : ''} 
+                        ${isSelected 
+                            ? 'ring-4 ring-white ring-opacity-70 shadow-xl rounded-lg' 
+                            : ''
+                        }`}
                         >
                         <div
                             style={{
-                            ...getClipPath(),
+                                ...getClipPath(),
+                                filter: image.desired_self && !isSelected ? 'drop-shadow(2px 4px 5px rgba(0,0,0,0.25)) drop-shadow(0px 0px 7px #818cf8)' : 'none',
+                                // Webkit-specific property for better compatibility
+                                WebkitFilter: image.desired_self && !isSelected ? 'drop-shadow(2px 4px 5px rgba(0,0,0,0.25)) drop-shadow(0px 0px 7px #818cf8)' : 'none'
                             }}
-                            className={`relative w-full h-full ${getFrameStyle()} overflow-hidden ${
-                                isSelected ? 'ring-4 ring-white ring-opacity-70 shadow-xl' : ''
-                            }`}
+                            className={`relative w-full h-full ${getFrameStyle()} overflow-hidden`}
                         >
                             <img
                                 src={imageLoadError ? "/images/default_image.png" : image.src}
